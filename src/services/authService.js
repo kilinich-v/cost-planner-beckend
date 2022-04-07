@@ -17,6 +17,10 @@ const login = async ({ email, password }) => {
 }
 
 const register = async user => {
+  const checkdUser = await findByEmail(user.email)
+
+  if (checkdUser) return null
+
   return await createUser(user)
 }
 
