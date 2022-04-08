@@ -1,4 +1,4 @@
-const authService = require('../services/authService')
+const { authService } = require('../services')
 
 const register = async (req, res, next) => {
   try {
@@ -12,4 +12,26 @@ const register = async (req, res, next) => {
   }
 }
 
-module.exports = { register }
+const login = async (req, res, next) => {
+  try {
+    const token = await authService.login(req.body)
+
+    if (!token) return res.status(200).json({ status: 'fail', error: 'Email or password is wrong' })
+
+    return res.status(200).json({ status: 'success', token })
+  } catch (error) {
+    next(error)
+  }
+}
+
+const logout = async (req, res, next) => {
+  try {
+    await authService.logout(req.body.id)
+
+    return res.status(200).json({ status: 'success' })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { register, login, logout }

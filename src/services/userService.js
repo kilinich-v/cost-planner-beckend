@@ -1,4 +1,4 @@
-const User = require('../schemas/userSchema')
+const { User } = require('../schemas')
 
 const createUser = async body => {
   const user = await User({ ...body })

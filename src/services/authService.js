@@ -5,7 +5,7 @@ const { createUser, findByEmail, updateToken } = require('./userService')
 
 const login = async ({ email, password }) => {
   const user = await findByEmail(email)
-  const validatedPassword = await user?.validatePassword(password)
+  const validatedPassword = user?.validatePassword(password)
 
   if (!user || !validatedPassword) return null
 

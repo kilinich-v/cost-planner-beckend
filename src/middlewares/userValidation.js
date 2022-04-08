@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-const validateRegister = (req, res, next) => {
+const register = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(2).required(),
     email: Joi.string().email({
@@ -21,4 +21,21 @@ const validateRegister = (req, res, next) => {
   }
 }
 
-module.exports = { validateRegister }
+const login = (req, res, next) => {
+  const schema = Joi.object({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+  })
+
+  const validation = schema.validate(req.body)
+
+  if (validation.error) {
+    const error = validation.error.details.context.label
+
+    return res.status(200).json({ status: 'fail', error: `missing required '${error}' field` })
+  } else {
+    next()
+  }
+}
+
+module.exports = { register, login }
