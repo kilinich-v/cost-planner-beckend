@@ -1,4 +1,4 @@
 const authService = require('./authService')
-const userService = require('./userService')
+const noteService = require('./noteService')
 
-module.exports = { authService, userService }
+module.exports = { authService, noteService }

@@ -34,4 +34,14 @@ const logout = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, logout }
+const current = async (req, res, next) => {
+  try {
+    const user = await authService.current(req.body.id)
+
+    if (user) return res.status(200).json({ status: 'success', data: user })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { register, login, logout, current }

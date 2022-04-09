@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-const { createUser, findByEmail, updateToken } = require('./userService')
+const { User } = require('../schemas')
 
 const login = async ({ email, password }) => {
-  const user = await findByEmail(email)
+  const user = await User.findOne({ email })
   const validatedPassword = user?.validatePassword(password)
 
   if (!user || !validatedPassword) return null
@@ -17,15 +17,20 @@ const login = async ({ email, password }) => {
 }
 
 const register = async user => {
-  const checkdUser = await findByEmail(user.email)
+  const checkdUser = await User.findOne({ email })
 
   if (checkdUser) return null
 
-  return await createUser(user)
+  const newUser = await User(user)
+  return await newUser.save()
 }
 
 const logout = async id => {
-  return await updateToken(id, null)
+  return await User.updateOne({ _id: id }, { token })
 }
 
-module.exports = { login, register, logout }
+const current = async id => {
+  return await User.findById(id)
+}
+
+module.exports = { login, register, logout, current }

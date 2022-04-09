@@ -1,4 +1,4 @@
 const authController = require('./authController')
-const userController = require('./userController')
+const noteController = require('./noteController')
 
-module.exports = { authController, userController }
+module.exports = { authController, noteController }

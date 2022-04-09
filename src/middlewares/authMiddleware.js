@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-const { findById } = require('../services/usersService')
+const { User } = require('../schemas')
 
 const authMiddleware = (req, res, next) => {
   const auth = req.headers['authorization']
@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
   const [_, token] = auth.split(' ')
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-    const user = await findById(decoded?.id)
+    const user = await User.findById(id)
 
     try {
       if (err || !user || !user.token || user.token !== token) {
