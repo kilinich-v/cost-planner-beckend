@@ -2,9 +2,7 @@ const Joi = require('joi')
 
 const createShape = noteType => {
   return noteType === 'spending'
-    ? Joi.any()
-        .valid('food', 'technics', 'leisure', 'sport', 'relaxation')
-        .required('NoteType can be income or spending')
+    ? Joi.any().valid('food', 'technics', 'leisure', 'sport', 'relaxation').required()
     : Joi.any().valid('salary', 'deposit', 'saving').required()
 }
 
