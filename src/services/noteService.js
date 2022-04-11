@@ -3,7 +3,7 @@ const { Note } = require('../schemas')
 const addNote = async note => {
   const newNote = new Note(note)
 
-  return newNote.save()
+  return await newNote.save()
 }
 
 const setNote = async (id, note) => {

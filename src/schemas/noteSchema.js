@@ -13,13 +13,18 @@ const noteSchema = new Schema({
   noteSection: {
     type: String,
     required: [true, 'Section is required'],
+    default: '',
   },
   money: {
     type: Number,
     required: [true, 'Money is required'],
   },
+  currency: {
+    type: String,
+    require: [true, 'Currency is required'],
+  },
   date_create: {
-    type: Date,
+    type: Number,
     default: Date.now(),
     required: true,
   },
