@@ -1,5 +1,13 @@
 const { Note } = require('../schemas')
 
+const getNotes = async owner => {
+  return await Note.find({ owner })
+}
+
+const getNote = async id => {
+  return await Note.findById(id)
+}
+
 const addNote = async note => {
   const newNote = new Note(note)
 
@@ -11,7 +19,7 @@ const setNote = async (id, note) => {
 }
 
 const deleteNote = async id => {
-  await Note.findByIdAndDelete(id)
+  return await Note.findByIdAndDelete(id)
 }
 
-module.exports = { addNote, setNote, deleteNote }
+module.exports = { getNotes, getNote, addNote, setNote, deleteNote }

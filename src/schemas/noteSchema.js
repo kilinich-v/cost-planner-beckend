@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const noteSchema = new Schema({
+  id: {
+    type: Number,
+    required: [true, 'Owner is required'],
+  },
   owner: {
     type: String,
     required: [true, 'Owner is required'],

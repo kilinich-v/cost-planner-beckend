@@ -6,7 +6,7 @@ const createShape = noteType => {
     : Joi.any().valid('salary', 'deposit', 'saving').required()
 }
 
-const newNote = (req, res, next) => {
+const note = (req, res, next) => {
   const schema = Joi.object({
     owner: Joi.string().required(),
     noteType: Joi.any().valid('income', 'spending').required(),
@@ -16,7 +16,6 @@ const newNote = (req, res, next) => {
     date_create: Joi.date().timestamp(),
   })
 
-  console.dir(schema.validate(req.body))
   const validation = schema.validate(req.body)
 
   if (validation.error) {
@@ -28,4 +27,4 @@ const newNote = (req, res, next) => {
   }
 }
 
-module.exports = { newNote }
+module.exports = { note }
