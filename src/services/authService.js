@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
+const { NotAuthorizedError, RegistrationError, NotFoundError } = require('../helpers')
+
 const { User } = require('../schemas')
 
 const login = async ({ email, password }) => {
@@ -17,9 +19,9 @@ const login = async ({ email, password }) => {
 }
 
 const register = async user => {
-  const checkdUser = await User.findOne({ email })
-
-  if (checkdUser) return null
+  if (await User.findOne({ email: user.email })) {
+    throw new RegistrationError('Email in use')
+  }
 
   const newUser = await User(user)
   return await newUser.save()

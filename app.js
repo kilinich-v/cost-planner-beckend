@@ -6,9 +6,6 @@ const { userRoutes, noteRoutes } = require('./src/routes')
 const app = express()
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 app.use(logger(formatsLogger))
 app.use(express.json({ limit: 10000 }))
 

@@ -3,15 +3,11 @@ const Joi = require('joi')
 const register = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().min(2).required(),
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net', 'ua'] },
-    }),
+    email: Joi.string().email().required(),
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
   })
 
   const validation = schema.validate(req.body)
-
   if (validation.error) {
     const error = validation.error.details.context.label
 
