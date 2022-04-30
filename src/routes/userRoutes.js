@@ -3,10 +3,11 @@ const router = express.Router()
 
 const { userValidation, authMiddleware } = require('../middlewares')
 const { authController } = require('../controllers')
+const { asyncErrorsWrapper } = require('../helpers')
 
-router.post('/register', userValidation.register, authController.register)
-router.post('/login', userValidation.login, authController.login)
-router.post('/logout')
-router.get('/current_user', authMiddleware, authController.current)
+router.post('/register', userValidation.register, asyncErrorsWrapper(authController.register))
+router.post('/login', userValidation.login, asyncErrorsWrapper(authController.login))
+router.post('/logout', authMiddleware, asyncErrorsWrapper(authController.logout))
+router.get('/current_user', authMiddleware, asyncErrorsWrapper(authController.current))
 
 module.exports = router

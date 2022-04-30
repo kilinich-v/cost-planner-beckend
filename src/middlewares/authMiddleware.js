@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
   const [_, token] = auth.split(' ')
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-    const user = await User.findById(id)
+    const user = await User.findById(decoded.id)
 
     try {
       if (err || !user || !user.token || user.token !== token) {

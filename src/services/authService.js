@@ -1,19 +1,23 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 require('dotenv').config()
 
-const { NotAuthorizedError, RegistrationError, NotFoundError } = require('../helpers')
+const { NotAuthorizedError, RegistrationError, NotFoundError } = require('../helpers/errors')
 
 const { User } = require('../schemas')
 
+const updateToken = async (id, token) => {
+  await User.findByIdAndUpdate(id, { $set: { token } }, { new: true })
+}
+
 const login = async ({ email, password }) => {
   const user = await User.findOne({ email })
-  const validatedPassword = user?.validatePassword(password)
 
-  if (!user || !validatedPassword) return null
+  if (!user || !(await bcrypt.compare(password, user.password))) return null
 
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY)
 
-  await updateToken(id, token)
+  await updateToken(user.id, token)
 
   return token
 }
@@ -27,8 +31,8 @@ const register = async user => {
   return await newUser.save()
 }
 
-const logout = async id => {
-  return await User.updateOne({ _id: id }, { token })
+const logout = async _id => {
+  return await User.updateOne({ _id }, { token: null })
 }
 
 const current = async id => {
