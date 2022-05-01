@@ -23,6 +23,15 @@ const userSchema = new Schema({
   },
 })
 
+userSchema.method('normalize', function () {
+  const user = this.toObject()
+  user.id = user._id
+  delete user._id
+  delete user.__v
+
+  return user
+})
+
 userSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.password = await bcrypt.hash(this.password, 10)

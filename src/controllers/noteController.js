@@ -18,9 +18,10 @@ const getNotes = async (req, res, next) => {
 
 const getNote = async (req, res, next) => {
   const id = req.query.id
+  const userId = req.user.id
 
   try {
-    const note = await noteService.getNote(id)
+    const note = await noteService.getNote(id, userId)
 
     if (note) {
       return res.status(200).json({ status: 'success', data: note })
@@ -34,11 +35,16 @@ const getNote = async (req, res, next) => {
 
 const addNote = async (req, res, next) => {
   const note = req.body
+  const userId = req.user.id
 
   try {
-    const newNote = await noteService.addNote(note)
+    const newNote = await noteService.addNote(note, userId)
 
-    if (newNote) return res.status(200).json({ status: 'success', data: newNote })
+    if (newNote) {
+      return res.status(201).json({ status: 'success', data: newNote })
+    } else {
+      return res.status(401).json({ status: 'fail', error: 'Incorrect user' })
+    }
   } catch (error) {
     next(error)
   }
@@ -47,11 +53,14 @@ const addNote = async (req, res, next) => {
 const setNote = async (req, res, next) => {
   const note = req.body
   const id = req.query.id
+  const userId = req.user.id
 
   try {
+    if (userId !== note.owner) return res.status(404).json({ status: 'success', error: 'Note not found' })
     const modifiedNote = await noteService.setNote(id, note)
-
-    if (modifiedNote) return res.status(200).json({ status: 'success', data: modifiedNote })
+    if (modifiedNote) {
+      return res.status(200).json({ status: 'success', data: modifiedNote })
+    }
   } catch (error) {
     next(error)
   }

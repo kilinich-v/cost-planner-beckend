@@ -28,7 +28,9 @@ const register = async user => {
   }
 
   const newUser = await User(user)
-  return await newUser.save()
+  await newUser.save()
+
+  return newUser.normalize()
 }
 
 const logout = async _id => {
@@ -36,7 +38,9 @@ const logout = async _id => {
 }
 
 const current = async id => {
-  return await User.findById(id)
+  const user = await User.findById(id)
+
+  return user.normalize()
 }
 
 module.exports = { login, register, logout, current }

@@ -8,6 +8,6 @@ const { asyncErrorsWrapper } = require('../helpers')
 router.post('/register', userValidation.register, asyncErrorsWrapper(authController.register))
 router.post('/login', userValidation.login, asyncErrorsWrapper(authController.login))
 router.post('/logout', authMiddleware, asyncErrorsWrapper(authController.logout))
-router.get('/current_user', authMiddleware, asyncErrorsWrapper(authController.current))
+router.get('/current', authMiddleware, asyncErrorsWrapper(authController.current))
 
 module.exports = router

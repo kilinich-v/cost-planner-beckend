@@ -4,18 +4,29 @@ const getNotes = async owner => {
   return await Note.find({ owner })
 }
 
-const getNote = async id => {
-  return await Note.findById(id)
+const getNote = async (id, userId) => {
+  const note = await Note.findById(id)
+
+  if (userId !== note.owner) return null
+
+  return note.normalize()
 }
 
-const addNote = async note => {
+const addNote = async (note, id) => {
+  if (note.owner !== id) {
+    return null
+  }
+
   const newNote = new Note(note)
 
-  return await newNote.save()
+  await newNote.save()
+  return newNote.normalize()
 }
 
 const setNote = async (id, note) => {
-  return await Note.findByIdAndUpdate(id, { $set: note }, { new: true })
+  const modifiedNote = await Note.findByIdAndUpdate(id, { $set: note }, { new: true })
+
+  return modifiedNote.normalize()
 }
 
 const deleteNote = async id => {

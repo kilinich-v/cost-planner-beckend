@@ -2,13 +2,10 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const noteSchema = new Schema({
-  id: {
-    type: Number,
-    required: [true, 'Owner is required'],
-  },
   owner: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, 'Owner is required'],
+    ref: 'users',
   },
   noteType: {
     type: String,
@@ -32,6 +29,16 @@ const noteSchema = new Schema({
     default: Date.now(),
     required: true,
   },
+})
+
+noteSchema.method('normalize', function () {
+  const note = this.toObject()
+  note.id = note._id
+
+  delete note._id
+  delete note.__v
+
+  return note
 })
 
 const Note = mongoose.model('note', noteSchema)
