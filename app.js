@@ -1,7 +1,7 @@
 const express = require('express')
 const logger = require('morgan')
 
-const { userRoutes, noteRoutes } = require('./src/routes')
+const { userRoutes, noteRoutes, resourceRoutes } = require('./src/routes')
 
 const app = express()
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
@@ -11,6 +11,7 @@ app.use(express.json({ limit: 10000 }))
 
 app.use('/user', userRoutes)
 app.use('/notes', noteRoutes)
+app.use('/resources', resourceRoutes)
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Wrong route' })

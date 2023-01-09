@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const { Schema } = mongoose
-
 const bcrypt = require('bcrypt')
+
+require('dotenv').config()
 
 const userSchema = new Schema({
   name: {
@@ -28,6 +30,7 @@ userSchema.method('normalize', function () {
   user.id = user._id
   delete user._id
   delete user.__v
+  delete user.password
 
   return user
 })
@@ -35,6 +38,8 @@ userSchema.method('normalize', function () {
 userSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.password = await bcrypt.hash(this.password, 10)
+
+    this.token = jwt.sign({ id: this.id }, process.env.JWT_SECRET_KEY)
   }
 
   next()

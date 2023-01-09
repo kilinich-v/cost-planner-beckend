@@ -1,7 +1,8 @@
 const { Note } = require('../schemas')
 
 const getNotes = async owner => {
-  return await Note.find({ owner })
+  const notes = await Note.find({ owner })
+  return notes.map(note => note.normalize())
 }
 
 const getNote = async (id, userId) => {

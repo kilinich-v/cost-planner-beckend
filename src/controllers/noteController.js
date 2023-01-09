@@ -1,11 +1,10 @@
 const { noteService } = require('../services')
 
 const getNotes = async (req, res, next) => {
-  const ownerId = req.query.userId
+  const ownerId = req.user.id
 
   try {
     const notes = await noteService.getNotes(ownerId)
-
     if (notes) {
       return res.status(200).json({ status: 'success', data: notes })
     } else {
@@ -34,11 +33,11 @@ const getNote = async (req, res, next) => {
 }
 
 const addNote = async (req, res, next) => {
-  const note = req.body
-  const userId = req.user.id
+  const owner = req.user.id
+  const note = { owner, ...req.body }
 
   try {
-    const newNote = await noteService.addNote(note, userId)
+    const newNote = await noteService.addNote(note, owner)
 
     if (newNote) {
       return res.status(201).json({ status: 'success', data: newNote })

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 
-const { NotAuthorizedError, RegistrationError, NotFoundError } = require('../helpers/errors')
+const { ValidationError, RegistrationError } = require('../helpers/errors')
 
 const { User } = require('../schemas')
 
@@ -13,7 +13,9 @@ const updateToken = async (id, token) => {
 const login = async ({ email, password }) => {
   const user = await User.findOne({ email })
 
-  if (!user || !(await bcrypt.compare(password, user.password))) return null
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    throw new ValidationError('Email or password is wrong')
+  }
 
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY)
 

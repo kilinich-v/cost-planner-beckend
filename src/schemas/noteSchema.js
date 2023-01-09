@@ -7,11 +7,11 @@ const noteSchema = new Schema({
     required: [true, 'Owner is required'],
     ref: 'users',
   },
-  noteType: {
+  note_type: {
     type: String,
     require: [true, 'Type is required'],
   },
-  noteSection: {
+  note_section: {
     type: String,
     required: [true, 'Section is required'],
     default: '',
