@@ -8,11 +8,11 @@ const noteSchema = new Schema({
     ref: 'users',
   },
   note_type: {
-    type: String,
+    type: Number,
     require: [true, 'Type is required'],
   },
   note_section: {
-    type: String,
+    type: Number,
     required: [true, 'Section is required'],
     default: '',
   },

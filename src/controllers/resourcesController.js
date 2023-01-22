@@ -13,4 +13,17 @@ const getResourceForNotes = async (req, res, next) => {
   }
 }
 
-module.exports = { getResourceForNotes }
+const getResourceForSchema = async (req, res, next) => {
+  try {
+    const resources = await resourceService.getResourcesForNotes()
+
+    if (resources) {
+      req.resources = resources
+      next()
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { getResourceForNotes, getResourceForSchema }

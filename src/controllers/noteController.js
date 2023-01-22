@@ -71,8 +71,6 @@ const deleteNote = async (req, res, next) => {
   try {
     const deletedNote = await noteService.deleteNote(id)
 
-    console.log(deletedNote)
-
     if (deletedNote) {
       return res.status(200).json({ status: 'success', data: {} })
     } else {
