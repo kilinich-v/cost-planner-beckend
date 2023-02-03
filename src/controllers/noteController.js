@@ -55,7 +55,7 @@ const setNote = async (req, res, next) => {
   const userId = req.user.id
 
   try {
-    if (userId !== note.owner) return res.status(404).json({ status: 'success', error: 'Note not found' })
+    if (userId !== note.owner) return res.status(200).json({ status: 'fail', error: 'Note not found' })
     const modifiedNote = await noteService.setNote(id, note)
     if (modifiedNote) {
       return res.status(200).json({ status: 'success', data: modifiedNote })

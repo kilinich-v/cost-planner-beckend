@@ -13,7 +13,13 @@ router.post(
   noteValidation.note,
   noteController.addNote,
 )
-router.post('/set_note', authMiddleware, noteValidation.note, noteController.setNote)
+router.post(
+  '/set_note',
+  authMiddleware,
+  resourcesController.getResourceForSchema,
+  noteValidation.note,
+  noteController.setNote,
+)
 router.post('/delete_note', authMiddleware, noteController.deleteNote)
 
 module.exports = router
